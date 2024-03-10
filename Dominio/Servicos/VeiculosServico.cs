@@ -51,6 +51,6 @@ public class VeiculoServico : IVeiculosServico
         {
             query = query.Skip((int)(pagina - 1) * itemsPorPagina).Take(itemsPorPagina);
         }
-        return query.ToList();
+        return [.. query];
     }
 }
