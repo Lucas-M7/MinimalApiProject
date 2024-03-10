@@ -1,14 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Minimal_Api_Project.Dominio.Interfaces;
+using MinimalApi.Dominio.Entidades;
 using MinimalApi.Dominio.Interfaces;
 using MinimalApi.Dominio.ModelViews;
 using MinimalApi.Dominio.Servicos;
 using MinimalApi.DTOs;
 using MinimalApi.Infraestutura.Db;
 
+#region Builder
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddScoped<IAdministradorServico, AdministradorServico>();
+builder.Services.AddScoped<IVeiculosServico, VeiculoServico>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -17,18 +21,48 @@ builder.Services.AddDbContext<DbContexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("ConexaoPadrao")));
 
 var app = builder.Build();
+#endregion
 
-app.MapGet("/", () => Results.Json(new Home()));
+#region Home
+app.MapGet("/", () => Results.Json(new Home())).WithTags("Home");
+#endregion
 
-app.MapPost("/login", ([FromBody]  LoginDTO loginDTO, IAdministradorServico administradorServico) =>
+#region Administradores
+app.MapPost("/administradores/login", ([FromBody] LoginDTO loginDTO, IAdministradorServico administradorServico) =>
 {
     if (administradorServico.Login(loginDTO) != null)
         return Results.Ok("Login feito com sucesso!");
     else
-        return Results.Unauthorized(); 
-});
+        return Results.Unauthorized();
+}).WithTags("Administradores");
+#endregion
 
+#region Veiculos
+app.MapPost("/veiculos", ([FromBody] VeiculoDTO veiculoDTO, IVeiculosServico veiculosServico) =>
+{
+    var veiculo = new Veiculo
+    {
+        Nome = veiculoDTO.Nome,
+        Marca = veiculoDTO.Marca,
+        Ano = veiculoDTO.Ano
+    };
+
+    veiculosServico.Incluir(veiculo);
+
+    return Results.Created($"/veiculo/{veiculo.Id}", veiculo);
+}).WithTags("Veículos");
+
+app.MapGet("/veiculos", ([FromQuery]int? pagina, IVeiculosServico veiculosServico) =>
+{
+    var veiculos = veiculosServico.Todos(pagina);
+
+    return Results.Ok(veiculos);
+}).WithTags("Veículos");
+#endregion
+
+#region  App
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.Run();
+#endregion
