@@ -20,11 +20,11 @@ SQL Server
 
 ## Detalhes
 
-CRUD.
-Criação de uma Minimal API.
-Injeção de Dependência.
-Login de Usuários.
-Programação Defensiva.
-Segurança com Token JWT.
-Utilização de Banco de Dados.
-Validação de Usuários.
+ - CRUD.
+ - Criação de uma Minimal API.
+ - Injeção de Dependência.
+ - Login de Usuários.
+ - Programação Defensiva.
+ - Segurança com Token JWT.
+ - Utilização de Banco de Dados.
+ - Validação de Usuários.
