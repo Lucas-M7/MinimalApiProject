@@ -3,7 +3,7 @@ using MinimalApi.Dominio.Entidades;
 
 namespace MinimalApi.Infraestutura.Db;
 
-public class DbContexto : DbContext
+public class DbContexto(DbContextOptions<DbContexto> options) : DbContext(options)
 {
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -17,10 +17,6 @@ public class DbContexto : DbContext
                 Perfil = "Adm"
             }
         );
-    }
-
-    public DbContexto(DbContextOptions<DbContexto> options) : base(options)
-    {
     }
 
     public DbSet<Administrador> Administradores { get; set; } = default!;
