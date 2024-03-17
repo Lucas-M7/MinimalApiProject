@@ -8,7 +8,7 @@ No contexto específico do desenvolvimento web, as "Minimal APIs" podem se refer
 
 ## Imagem
 
-![Imagem do Projeto - API(src/imagem-api.jpg)
+![Imagem do Projeto - API(https://github.com/Lucas-M7/MinimalApiProject/blob/main/src/imagem-api.jpg?raw=true)
 
 
 ## Descrição do Projeto
